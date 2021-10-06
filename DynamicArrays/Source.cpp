@@ -10,6 +10,9 @@ using std::endl;
 
 #define delimiter "\n-----------------------------------------------------------\n"
 
+int** allocate( const int rows, const int cols);
+void clear(int** arr, const int rows);
+
 void FillRand(int arr[], const int n, int minRand = 0, int maxRand = 100);
 void FillRand(int** arr, const int rows, const int cols, int minRand = 0, int maxRand = 100);
 
@@ -19,9 +22,6 @@ void Print(int** arr, const int rows, const int cols);
 int* push_back(int arr[], int& n, int value);
 int* insert(int arr[], int& n, int value, int index);//Вставляет значение в строку по заданному индексу
 int* pop_back(int arr[], int& n);//Удаляет последний элемент массива
-
-int** allocate( const int rows, const int cols);
-void clear(int** arr, const int rows);
 
 int** push_row_back(int** arr, int& rows, const int cols);
 int** push_row_front(int** arr, int& rows, const int cols);
@@ -181,7 +181,7 @@ void main()
 			Print(arr, rows, cols); break;
 		case 5:
 			cout << delimiter << endl;
-			arr = pop_col_front(arr, rows, cols);
+			 pop_col_front(arr, rows, cols);
 			Print(arr, rows, cols); break;
 		case 6:
 			cout << delimiter << endl;
@@ -194,6 +194,24 @@ void main()
 	}
 	clear(arr, rows);
 }
+
+	int** allocate( const int rows, const int cols)
+	{
+		int** arr = new int* [rows] {};
+		for (int i = 0; i < rows; i++)
+		{
+			arr[i] = new int[cols] {};
+		}
+		return arr;
+	}
+	void clear(int** arr, const int rows)
+	{
+		for (int i = 0; i < rows; i++)
+		{
+			delete[] arr[i];
+		}
+		delete[] arr;
+	}
 
 	void FillRand(int arr[], const int n, int minRand, int maxRand)
 	{
@@ -279,23 +297,6 @@ void main()
 		return buffer;
 	}
 
-	int** allocate( const int rows, const int cols)
-	{
-		int** arr = new int* [rows] {};
-		for (int i = 0; i < rows; i++)
-		{
-			arr[i] = new int[cols] {};
-		}
-		return arr;
-	}
-	void clear(int** arr, const int rows)
-	{
-		for (int i = 0; i < rows; i++)
-		{
-			delete[] arr[i];
-		}
-		delete[] arr;
-	}
 
 	int** push_row_back(int** arr, int& rows, const int cols)
 	{
@@ -449,7 +450,7 @@ void main()
 		for (int i = 0; i < rows; i++)
 		{
 			int* buffer = new int[cols - 1];
-			for (int j = 0; j < cols; j++)buffer[j] = arr[i][j];
+			for (int j = 0; j < cols; j++)buffer[j] = arr[i][j+1];
 			delete[] arr[i];
 			arr[i] = buffer;
 		}
