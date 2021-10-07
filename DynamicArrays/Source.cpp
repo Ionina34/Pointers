@@ -124,7 +124,7 @@ void main()
 	int index;
 	cout << "¬ведите количество строк: "; cin >> rows;
 	cout << "¬ведите количество элементов строки: "; cin >> cols;
-	int** arr = allocate <int>(rows, cols);
+	double** arr = allocate <double>(rows, cols);
 	FillRand(arr, rows, cols);
 	Print(arr, rows, cols);
 	cout << "—делайте свой выбор:\n1-rows;\n2-cols." << endl; cin >> s;
@@ -451,7 +451,7 @@ template<typename T>T** insert_col(T** arr, int& rows, int& cols, int index)
 	T** buffer = new T* [rows] {};
 	for (int i = 0; i < rows; i++)
 	{
-		buffer[i] = new int[cols + 1]{};
+		buffer[i] = new T[cols + 1]{};
 	}
 	for (int i = 0; i < rows; i++)
 	{
@@ -496,7 +496,7 @@ template<typename T>T**  erase_col(T** arr, int& rows, int& cols, int index)
 	T** buffer = new T* [rows] {};
 	for (int i = 0; i < rows; i++)
 	{
-		buffer[i] = new int[cols - 1]{};
+		buffer[i] = new T[cols - 1]{};
 	}
 	for (int i = 0; i < rows; i++)
 	{
