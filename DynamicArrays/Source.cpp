@@ -1,3 +1,4 @@
+
 #include<iostream>
 using namespace std;
 using std::cout;
@@ -15,6 +16,7 @@ template<typename T>void clear(T** arr, const int rows);
 
 void FillRand(int arr[], const int n, int minRand = 0, int maxRand = 100);
 void FillRand(char arr[], const int n, int minRand = 0, int maxRand = 100);
+void FillRand(double arr[], const int n, int minRand = 0, int maxRand = 100);
 void FillRand(int** arr, const int rows, const int cols, int minRand = 0, int maxRand = 100);
 void FillRand(char** arr, const int rows, const int cols, int minRand = 0, int maxRand = 100);
 void FillRand(double** arr, const int rows, const int cols, int minRand = 0, int maxRand = 100);
@@ -24,7 +26,6 @@ template<typename T>void Print(T** arr, const int rows, const int cols);
 
 template<typename T>T* push_back(T arr[], int& n, T value);
 template<typename T>T* insert(T arr[], int& n, T value, int index);//Вставляет значение в строку по заданному индексу
-template<typename T>T* pop_back(T arr[], int& n);//Удаляет последний элемент массива
 
 template<typename T>T** push_row_back(T** arr, int& rows, const int cols);
 template<typename T>T** push_row_front(T** arr, int& rows, const int cols);
@@ -35,10 +36,10 @@ template<typename T>T** erase_row(T** arr, int& rows, const int cols, int index)
 
 template<typename T>void push_col_back(T** arr, const int rows, int& cols);
 template<typename T>void push_col_front(T** arr, const int rows, int& cols);
-int** insert_col(int** arr, int& rows, int& cols, int index);
+template<typename T>T** insert_col(T** arr, int& rows, int& cols, int index);
 template<typename T>void pop_col_back(T** arr, const int rows, int& cols);
 template<typename T>void pop_col_front(T** arr, const int rows, int& cols);
-int** erase_col(int** arr, int& rows, int& cols, int index);
+template<typename T>T** erase_col(T** arr, int& rows, int& cols, int index);
 
 void main()
 {
@@ -123,7 +124,7 @@ void main()
 	int index;
 	cout << "Введите количество строк: "; cin >> rows;
 	cout << "Введите количество элементов строки: "; cin >> cols;
-	int** arr = allocate<int>(rows, cols);
+	int** arr = allocate <int>(rows, cols);
 	FillRand(arr, rows, cols);
 	Print(arr, rows, cols);
 	cout << "Сделайте свой выбор:\n1-rows;\n2-cols." << endl; cin >> s;
@@ -234,6 +235,18 @@ void FillRand(char arr[], const int n, int minRand, int maxRand)
 		*(arr + i) = rand();
 	}
 }
+void FillRand(double arr[], const int n, int minRand, int maxRand)
+{
+	minRand *= 100;
+	maxRand *= 100;
+	//Обращаться к элементам массива можно
+	for (int i = 0; i < n; i++)
+	{
+		//Используя арифметику указателей и оператор разыменования:
+		*(arr + i) = rand() % (maxRand - minRand) + minRand;
+		*(arr + i) /= 100;
+	}
+}
 void FillRand(int** arr, const int rows, const int cols, int minRand, int maxRand)
 {
 	for (int i = 0; i < rows; i++)
@@ -256,14 +269,14 @@ void FillRand(char** arr, const int rows, const int cols, int minRand, int maxRa
 }
 void FillRand(double** arr, const int rows, const int cols, int minRand, int maxRand)
 {
-	minRand = 0;
-	maxRand = 100;
+	minRand *= 100;
+	maxRand *= 100;
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < cols; j++)
 		{
 			arr[i][j] = rand() % (maxRand - minRand) + minRand;
-			arr[i][j] / 100;
+			arr[i][j] /= 100;
 		}
 	}
 }
@@ -317,18 +330,6 @@ template<typename T>T* insert(T arr[], int& n, T value, int index)
 	delete[] arr;
 	buffer[index] = value;
 	n++;
-	return buffer;
-}
-template<typename T>T* pop_back(T[], int& n)
-{
-	n--;
-	T* buffer = new T[n]{};
-	for (int i = 0; i < n; i++)
-	{
-		buffer[i] = arr[i];
-	}
-	delete[] arr;
-	arr = buffer;
 	return buffer;
 }
 
@@ -444,10 +445,10 @@ template<typename T>void push_col_front(T** arr, const int rows, int& cols)
 	}
 	cols++;
 }
-int** insert_col(int** arr, int& rows, int& cols, int index)
+template<typename T>T** insert_col(T** arr, int& rows, int& cols, int index)
 {
 	--index;
-	int** buffer = new int* [rows] {};
+	T** buffer = new T* [rows] {};
 	for (int i = 0; i < rows; i++)
 	{
 		buffer[i] = new int[cols + 1]{};
@@ -490,9 +491,9 @@ template<typename T>void pop_col_front(T** arr, const int rows, int& cols)
 	}
 	cols--;
 }
-int** erase_col(int** arr, int& rows, int& cols, int index)
+template<typename T>T**  erase_col(T** arr, int& rows, int& cols, int index)
 {
-	int** buffer = new int* [rows] {};
+	T** buffer = new T* [rows] {};
 	for (int i = 0; i < rows; i++)
 	{
 		buffer[i] = new int[cols - 1]{};
