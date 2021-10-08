@@ -23,7 +23,7 @@ int* push_back(int arr[], int& n, int value);
 int* insert(int arr[], int& n, int value, int index);//Вставляет значение в строку по заданному индексу
 int* pop_back(int arr[], int& n);//Удаляет последний элемент массива
 
-int** push_row_back(int** arr, int& rows, const int cols);
+void push_row_back(int**& arr, int& rows, const int cols);
 int** push_row_front(int** arr, int& rows, const int cols);
 int** insert_row(int** arr, int& rows, const int cols, int index);
 int** pop_row_back(int** arr, int& rows, const int cols);
@@ -132,7 +132,7 @@ void main()
 		{
 		case 1:
 			cout << delimiter << endl;
-			arr = push_row_back(arr, rows, cols);
+			push_row_back(arr, rows, cols);
 			FillRand(arr[rows - 1], cols, 200, 1000);
 			Print(arr, rows, cols); break;
 		case 2:
@@ -298,7 +298,7 @@ int* pop_back(int arr[], int& n)
 }
 
 
-int** push_row_back(int** arr, int& rows, const int cols)
+void push_row_back(int**& arr, int& rows, const int cols)
 {
 	//Переопределяем массив указателей:
 	//1)Создаем буфкрный массив указателей, размером на 1 элемент больше:
@@ -315,7 +315,7 @@ int** push_row_back(int** arr, int& rows, const int cols)
 	//5)После того, как в массив добавилась строка, кол-во его строк увеличилось на 1:
 	rows++;
 	//6)Возвращаем ногвый массив на  место вызова:
-	return buffer;
+	arr = buffer;
 }
 int** push_row_front(int** arr, int& rows, const int cols)
 {
